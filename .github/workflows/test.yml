@@ -1,0 +1,25 @@
+name: gradlew build
+
+on: [ workflow_dispatch ]
+
+jobs:
+  build:
+    name: Gradle ${{ matrix.operating-system }}
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-18.04, macos-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: KengoTODA/setup-java@introduce-cache
+      with:
+        distribution: adopt
+        java-version: 8
+        cache: gradle
+    - name: Build gradle
+      run: |
+          chmod +x gradlew
+          ./gradlew build
